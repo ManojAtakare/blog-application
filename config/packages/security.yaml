@@ -1,13 +1,36 @@
 security:
+    encoders:
+        App\Entity\Users: bcrypt
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+
+    role_hierarchy:
+          ROLE_ADMIN: ROLE_USER
+          ROLE_SUPER_ADMIN: ROLE_ADMIN
+
     providers:
-        in_memory: { memory: ~ }
+          user_provider:
+                entity:
+                    class: App\Entity\Users
+                    property: username
     firewalls:
+
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
+                    anonymous: ~
+                    #http_basic: true
+                    form_login:
+                        #provider: fos_userbundle
+                        login_path: login
+                        check_path: login
+                        default_target_path: /blog
+
+                    logout:
+                         path: /logout
+                         target: /login
+
+
 
             # activate different ways to authenticate
 
@@ -20,5 +43,18 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # require ROLE_ADMIN for /admin*
+         - { path: ^/admin, roles: ROLE_ADMIN }
+         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/blog, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+#               - { path: ^/blog/showBlog, roles: IS_AUTHENTICATED_FULLY }
+#               - { path: ^/blog/createBlog, roles: IS_AUTHENTICATED_FULLY }
+
         # - { path: ^/profile, roles: ROLE_USER }
+
+
+
+
+
+
+

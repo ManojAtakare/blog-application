@@ -1,3 +1,37 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+login:
+    path: /
+    controller: App\Controller\SecurityController::login
+
+
+admin:
+    path: /admin
+    controller: App\Controller\DefaultController::admin
+
+logged:
+    path: /logged
+    controller: App\Controller\SecurityController::logged
+
+signup:
+    path: /signup
+    controller: App\Controller\SecurityController::signup
+
+
+sign_up_user:
+     path: /sign_up_user
+     controller: App\Controller\SecurityController::sign_up_user
+
+blog:
+    path: /blog
+    controller: App\Controller\BlogController::blog
+
+newblog:
+    path: /newblog
+    controller: App\Controller\BlogController::newblog
+
+blogcommentsave:
+    path: /blogcommentsave
+    controller: App\Controller\BlogController::blogcommentsave
+
+logout:
+    path: /logout
+    controller: App\Controller\SecurityController::logout

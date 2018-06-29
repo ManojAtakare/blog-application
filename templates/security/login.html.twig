@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<style type="text/css">
+    #mydiv {
+        position:absolute;
+        top: 40%;
+        left: 50%;
+        width:30em;
+        height:22em;
+        margin-top: -9em; /*set to a negative number 1/2 of your height*/
+        margin-left: -15em; /*set to a negative number 1/2 of your width*/
+        padding-bottom: 100px;
+    }
+
+</style>
+<body>
+
+<div class="container  well" id="mydiv">
+
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form action="{{ path('login') }}" method="post" class="form-signin">
+        <h2 class="form-signin-heading">Please sign in</h2>
+
+        <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="_username"  required class="form-control" value="{{ last_username }}" />
+        </div>
+        <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="_password" required class="form-control" />
+        </div>
+
+        {#
+            If you want to control the URL the user
+            is redirected to on success (more details below)
+            <input type="hidden" name="_target_path" value="/account" />
+            #}
+
+        <button type="submit" class="btn btn-primary">login</button> <a type="button" href="/signup" class="btn btn-primary" >Sign Up</a>
+    </form>
+
+</div> <!-- /container -->
+</body>
+</html>

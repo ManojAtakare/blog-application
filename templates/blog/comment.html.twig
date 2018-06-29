@@ -1,0 +1,210 @@
+<style>
+    @import url(//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css);
+
+    .detailBox {
+
+        border:1px solid #bbb;
+        margin-top: 30px;
+
+    }
+    .titleBox {
+        background-color:#fdfdfd;
+        padding:10px;
+    }
+    .titleBox label{
+        color:#444;
+        margin:0;
+        display:inline-block;
+    }
+
+    .commentBox {
+        padding:10px;
+        border-top:1px dotted #bbb;
+    }
+    .commentBox .form-group:first-child, .actionBox .form-group:first-child {
+        width:80%;
+    }
+    .commentBox .form-group:nth-child(2), .actionBox .form-group:nth-child(2) {
+        width:18%;
+    }
+    .actionBox .form-group * {
+        width:100%;
+    }
+    .taskDescription {
+        margin-top:10px 0;
+    }
+    .commentList {
+        padding:0;
+        list-style:none;
+        max-height:200px;
+        overflow:auto;
+    }
+    .commentList li {
+        margin:0;
+        margin-top:10px;
+    }
+    .commentList li > div {
+        display:table-cell;
+    }
+    .commenterImage {
+        width:30px;
+        margin-right:15px;
+        height:100%;
+        padding-right: 10px;
+        /*float:left;*/
+    }
+    .commenterImage img {
+        width:100%;
+        border-radius:50%;
+    }
+    .commentText p {
+        margin:0;
+    }
+    .sub-text {
+        color:#aaa;
+        font-family:verdana;
+        font-size:11px;
+    }
+    .actionBox {
+        border-top:1px dotted #bbb;
+        padding:10px;
+    }
+
+    .mar-top{
+        margin-top: 20px;
+    }
+
+
+    body
+    {
+        padding-top: 20px;
+        background-color: #F7F7F7;
+    }
+    .post
+    {
+        background-color: #FFF;
+        overflow: hidden;
+        box-shadow: 0 0 1px #CCC;
+    }
+    .post img
+    {
+        filter: blur(2px);
+        -webkit-filter: blur(2px);
+        -moz-filter: blur(2px);
+        -o-filter: blur(2px);
+        -ms-filter: blur(2px);
+    }
+    .post .content
+    {
+        padding: 15px;
+    }
+    .post .author
+    {
+        font-size: 11px;
+        color: #737373;
+        padding: 25px 30px 20px;
+    }
+    .post .post-img-content
+    {
+        height: 196px;
+        position: relative;
+    }
+    .post .post-img-content img
+    {
+        position: absolute;
+    }
+    .post .post-title
+    {
+        display: table-cell;
+        vertical-align: bottom;
+        z-index: 2;
+        position: relative;
+    }
+    .post .post-title b
+    {
+        background-color: rgba(51, 51, 51, 0.58);
+        display: inline-block;
+        margin-bottom: 5px;
+        color: #FFF;
+        padding: 10px 15px;
+        margin-top: 5px;
+    }
+    .writer{
+        float:right;
+        display:inline;
+    }
+
+    .mar-top{
+        margin-top: 20px;
+    }
+
+    .comment
+    {
+        display:inline;
+        float: right;
+        margin-right: 6px;
+    }
+    .title{
+        display:inline;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+
+            <div class="col-sm-12 col-md-12 mar-top" >
+                <div class="post">
+
+                    <div class="content">
+                        <div>
+                            <h2 class="title">{{ blogs.title }}</h2>
+
+
+                        </div>
+                        <br/>
+                        <div>
+                            {{ blogs.content}}
+                        </div>
+                        <div class="author writer" >
+                            {#By <b>Bhaumik</b> |#}
+                            <time datetime="2014-01-20">{{ blogs.createdAt | date('F dS Y') }}</time>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+
+
+<div class="detailBox">
+    <div class="titleBox">
+        <label>Comment Box</label>
+    </div>
+
+    <div class="actionBox">
+        <ul class="commentList">
+            {% for comment in comments %}
+            <li>
+                <div class="commenterImage">
+                    <img src="https://www.vacul.org/extension/site/design/site//images/anonymous-user.png" />
+                </div>
+                <div class="commentText">
+                    <p class="">{{ comment.comment }}</p> <span class="date sub-text">by {{ comment.visitorName }} on {{ comment.createdAt | date('F dS Y') }}</span>
+
+                </div>
+            </li>
+            {% endfor %}
+
+        </ul>
+        {% if error %}
+            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+        &nbsp;&nbsp;<a style="margin-left: 60px; margin-top:-84px" type="button" href="/blog" class="btn btn-primary" >Cancel</a>
+    </div>
+</div>
+</div>
