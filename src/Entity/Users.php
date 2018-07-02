@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="users")
  * @ORM\Entity
  */
-class Users implements UserInterface, \Serializable
+class Users implements UserInterface
 {
     /**
      * @var int
@@ -45,11 +45,7 @@ class Users implements UserInterface, \Serializable
      */
     private $username;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Length(max=4096)
-     */
-    private $plainPassword;
+
 
     /**
      * The below length depends on the "algorithm" you use for encoding
@@ -177,7 +173,7 @@ class Users implements UserInterface, \Serializable
     public function serialize()
     {
         return serialize(array(
-            $this->id,
+
             $this->username,
             $this->password,
             // see section on salt below

@@ -80,10 +80,11 @@
 </style>
 <div class="container">
     <div class="row">
-
-
         <div class="col-sm-12 col-md-12 " >
+            {% if app.user.id == 1 %}
             <a class="btn btn-info" href="/newblog">Add Blog</a>
+            {% endif %}
+            <a class="btn btn-danger" style="float:right" href="/logout">Logout</a>
             <h1 class="text-center">Blogs</h1>
 
         </div>
@@ -101,10 +102,9 @@
                         {% if blog.status == 1 %}
                         <a class="btn btn-info comment"  href="/blogs/comment/{{ blog.id}}">Comments</a>
                         {% endif %}
-                        {% if blog.status == 0 %}
+                        {% if (blog.status == 0) and (app.user.id == 1) %}
                             <a class="btn btn-warning comment"  href="/blogs/approve/{{ blog.id}}">Approve</a>
                         {% endif %}
-
                     </div>
                     <br/>
                     <div>

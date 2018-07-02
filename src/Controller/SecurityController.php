@@ -60,21 +60,58 @@ class SecurityController extends Controller
     }
 
 
-    public function signup(AuthenticationUtils $authenticationUtils){
+    public function signup(AuthenticationUtils $authenticationUtils, Request $request, UserPasswordEncoderInterface $passwordEncoder){
 
 //        $formFactory = Forms::createFormFactory();
 
         $error = $authenticationUtils->getLastAuthenticationError();
 
+        $errors = array();
         $newUsers =  new Users();
         $form = $this->createFormBuilder($newUsers)
-            ->add('full_name', TextType::class,array('attr'=>array('class'=>'form-control','placeholder'=>'Fullname')))
-            ->add('mobile_number', TextType::class,array('attr'=>array('class'=>'form-control','placeholder'=>'Mobile Number')))
-            ->add('username', TextType::class,array('attr'=>array('class'=>'form-control','placeholder'=>'Username')))
-            ->add('password', PasswordType::class,array('attr'=>array('class'=>'form-control','placeholder'=>'Password')))
+            ->add('full_name', TextType::class,array('required'=>true,'attr'=>array('class'=>'form-control','placeholder'=>'Fullname')))
+            ->add('mobile_number', TextType::class,array('required'=>true,'attr'=>array('class'=>'form-control','placeholder'=>'Mobile Number')))
+            ->add('username', TextType::class,array('required'=>true,'attr'=>array('class'=>'form-control','placeholder'=>'Username')))
+            ->add('password', PasswordType::class,array('required'=>true,'attr'=>array('class'=>'form-control','placeholder'=>'Password')))
             ->add('Sign Up', SubmitType::class,array('attr'=>array('label'=>'Sign Up','class'=>'btn btn-primary mt-3','style'=>'margin-top:10px;')))
             ->getForm();
-        return $this->render('security/signup.html.twig',array('form'=> $form->createView(),'error'=> $error));
+
+
+        $entityManager = $this->getDoctrine()->getManager();
+
+
+
+        $form->handleRequest($request);
+
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $content = $request->request->all();
+            $content = $content['form'];
+            foreach ($form->getErrors() as $error) {
+                $errors[] = $error->getMessage();
+            }
+
+            $newUsers->setFullName($content['full_name']);
+            $newUsers->setMobileNumber($content['mobile_number']);
+            $newUsers->setUsername($content['username']);
+            $password = $passwordEncoder->encodePassword($newUsers, $content['password']);
+            $newUsers->setPassword($password);
+            #$newUsers->setPassword($content['password']);
+            $entityManager->persist($newUsers);
+            $entityManager->flush();
+
+            return $this->render('security/signup.html.twig', array(
+                'last_username' => $content['full_name'],
+                'form'=> $form->createView(),
+                'error'         => $errors,
+            ));
+
+            echo "1";
+        }
+        echo "3";
+
+        return $this->render('security/signup.html.twig',array('form'=> $form->createView(),'error'=> ''));
        // return $this->render('security/signup.html.twig');
     }
 
@@ -83,35 +120,26 @@ class SecurityController extends Controller
         $content = $request->request->all();
 
         $content = $content['form'];
-
-
         $entityManager = $this->getDoctrine()->getManager();
-
         $newUsers =  new Users();
-
-
-
-
         $form = $this->createForm(UserType::class, $newUsers);
-
         $errors = array();
-
         foreach ($form->getErrors() as $error) {
             $errors[] = $error->getMessage();
         }
 
+         print_r($form->isValid());
+        exit;
         $form->handleRequest($request);
         if (empty($errors)) {
             $newUsers->setFullName($content['full_name']);
             $newUsers->setMobileNumber($content['mobile_number']);
             $newUsers->setUsername($content['username']);
-            $password = $passwordEncoder->encodePassword($newUsers, $newUsers->getPassword());
+            $password = $passwordEncoder->encodePassword($newUsers, $content['password']);
             $newUsers->setPassword($password);
-
             #$newUsers->setPassword($content['password']);
             $entityManager->persist($newUsers);
             $entityManager->flush();
-
 
             return $this->render('security/login.html.twig', array(
                 'last_username' => $content['full_name'],

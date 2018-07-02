@@ -68,13 +68,14 @@ class BlogController extends Controller
         if($form->isSubmitted() && $form->isValid()){
             $blog = $form->getData();
 
-
-
             $entityManager = $this->getDoctrine()->getManager();
 
 
 
+            $userInfo =  $this->getUser();
             $newblogs->setCreatedAt(new \DateTime());
+            $newblogs->setAuthor($userInfo->getFullname());
+            $newblogs->setStatus(0);
             $entityManager->persist($blog);
             $entityManager->flush();
 

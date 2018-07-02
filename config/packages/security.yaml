@@ -28,7 +28,7 @@ security:
 
                     logout:
                          path: /logout
-                         target: /login
+                         target: /
 
 
 
@@ -46,15 +46,8 @@ security:
         # require ROLE_ADMIN for /admin*
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-         - { path: ^/blog, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         - { path: ^/blog, roles: IS_AUTHENTICATED_FULLY }
 #               - { path: ^/blog/showBlog, roles: IS_AUTHENTICATED_FULLY }
 #               - { path: ^/blog/createBlog, roles: IS_AUTHENTICATED_FULLY }
 
         # - { path: ^/profile, roles: ROLE_USER }
-
-
-
-
-
-
-

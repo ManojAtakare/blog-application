@@ -19,14 +19,12 @@
 <div class="container well">
 
     {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        <div>{{ dump(error)}}</div>
     {% endif %}
 
-    <form action="{{ path('sign_up_user') }}" method="post" novalidate class="form-signin">
-        <h2 class="form-signin-heading">Please sign Up</h2>
-        {{ form_widget(form) }}
-        &nbsp;&nbsp;<a style="margin-left: 90px; margin-top:-57px" type="button" href="/" class="btn btn-primary" >< Back To Login</a>
-    </form>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
 
 </div> <!-- /container -->
 </body>
